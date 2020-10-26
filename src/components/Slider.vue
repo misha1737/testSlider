@@ -16,7 +16,6 @@
 import Vue from "vue";
 import noUiSlider from "nouislider";
 import "nouislider/distribute/nouislider.css";
-import { nextTick } from "vue/types/umd";
 export default Vue.extend({
   name: "sluder",
   props: {
@@ -25,15 +24,6 @@ export default Vue.extend({
   data() {
     return {
       value: 0,
-      maxRange: 500,
-      max: 1000,
-      start: [10],
-      slider: {
-        startMin: 25,
-        startMax: 1000,
-        start: 40,
-        step: 10,
-      },
       Slider: <HTMLElement>this.$refs.slider,
     };
   },
@@ -46,32 +36,27 @@ export default Vue.extend({
   mounted() {
     this.Slider = <HTMLElement>this.$refs.slider;
     let last = this.listValue[this.listValue.length - 1];
-    let rang =<any> {
+    let rang = <any>{
       min: 25,
     };
     let point = "";
-    this.listValue.reduce((sum: Number, current, i) => {
-      point =
-        ((100 / (this.listValue.length - 1)) * <number>sum).toFixed(0) + "%";
-      rang[point] = [this.listValue[+sum], this.listValue[i]];
-      return i;
-    }, 0);
-    rang["100%"] = [last, last];
+  this.listValue.forEach((element,i) => {
+     point =((100 / (this.listValue.length - 1)) * <number>i).toFixed(0) + "%";
+       rang[point] = this.listValue[+i];
+  });
+    rang["100%"] = last;
     rang["max"] = last;
-
     noUiSlider.create(this.Slider, {
       start: <number>this.listValue[0],
-      step: this.slider.step,
-      connect: true,
+      step: 1,
       range: <any>rang,
       pips: {
-        mode: "values",
-        values: <number[]>this.listValue,
-        density: 500,
+        mode: "range",
+        density: 10,
       },
     });
     (<any>this.$refs.slider).noUiSlider.on("update", (value: number) => {
-      this.value = value;
+      this.value = Math.floor(value);
     });
   },
 });
@@ -80,7 +65,7 @@ export default Vue.extend({
 #slider-input {
   margin-top: 100px;
 }
-.slider{
-  margin:50px;
+.slider {
+  margin: 50px;
 }
 </style>
