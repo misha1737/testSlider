@@ -1,29 +1,26 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <slider :listValue="listValue" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import slider from './components/Slider.vue';
 
 export default Vue.extend({
   name: 'App',
+  data() {
+    return {
+      listValue:[25,30,35,40,45,50,75,100,150,200,300,400,500,750,1000]
+    }
+  },
   components: {
-    HelloWorld
+    slider
   }
 });
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
